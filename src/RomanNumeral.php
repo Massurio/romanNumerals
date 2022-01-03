@@ -11,22 +11,6 @@ class RomanNumeral
         10 => 'X',
         5 => 'V',
         1 => 'I',
-    
-
-        // 2010 =>'MMX',
-        // 1000 => 'M',
-        // 900 => 'CM',
-        // 500 => 'D',
-        // 400 => 'CD',
-        // 100 => 'C',
-        // 90 => 'XC',
-        // 50 => 'L',
-        // 40 =>'XL',
-        // 10 => 'X',
-        // 9 => 'IX',
-        // 5 => 'V',
-        // 4 => 'IV',
-        // 1 => 'I',
     ];
 
     protected $numeral;
@@ -43,6 +27,7 @@ class RomanNumeral
      */
     public function toInt():int
     {
+        //Convert a roman numeral to a number value
         $total = 0;
         $roman = $this->numeral;
         $roman = strtoupper( $roman );
@@ -55,12 +40,12 @@ class RomanNumeral
 
             foreach ($this->symbols as $key => $value)
             {
-
                 if (($romanChars[$counter] == $value) && ((array_search($value, $this->symbols)) <= $lastNum))
                 {
                     $total = $total + (array_search($value, $this->symbols));
                     $lastNum = (array_search($value, $this->symbols));
-                } else if ($romanChars[$counter] == $value) {
+                } else if ($romanChars[$counter] == $value) 
+                {
                     $total = $total + (array_search($value, $this->symbols));
                     $total = $total - ($lastNum*2);
                     $lastNum = (array_search($value, $this->symbols));
@@ -69,7 +54,16 @@ class RomanNumeral
             $counter = $counter + 1;
         }
 
-           
-            return $total;
+        //Return Invalids
+        $invalids = array('Bad','XI Something','Something MM','-X','');
+        foreach ($invalids as $inspect)
+        {
+            if($this->numeral == $inspect)
+            {
+                throw new InvalidNumeral;
+            }
+        }
+        
+        return $total;
     }
 }
